@@ -1,9 +1,13 @@
-import React, { useState } from "react";
-import { Form, Input, Rating, Button } from "semantic-ui-react";
+import React, { useState } from "react"
+import { Form, Input, Rating, Button } from "semantic-ui-react"
 
-export const MovieForm = ({ onNewMovie }) => {
-  const [title, setTitle] = useState("");
-  const [rating, setRating] = useState(0);
+export const NewMovieForm = ({ onNewMovie }) => {
+  const [title, setTitle] = useState("")
+  const [rating, setRating] = useState(0)
+
+  const capitalize = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1)
+  }
 
   return (
     <Form>
@@ -27,20 +31,21 @@ export const MovieForm = ({ onNewMovie }) => {
       <Form.Field>
         <Button
           onClick={async () => {
-            const movie = { title, rating };
+            setTitle(capitalize(title))
+            let movie = { title, rating }
             const response = await fetch("/add_movie", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json"
               },
               body: JSON.stringify(movie)
-            });
+            })
 
             if (response.ok) {
-              console.log(response);
-              onNewMovie(movie);
-              setTitle("");
-              setRating(0);
+              movie['id'] = await response.json()
+              onNewMovie(movie)
+              setTitle("")
+              setRating(0)
             }
           }}
         >

@@ -1,16 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import { Movies } from './components/Movies';
-import { MovieForm } from './components/MovieForm';
+import { NewMovieForm } from './components/NewMovieForm';
 import { Container } from 'semantic-ui-react';
 import './App.css';
 
 function App() {
   const [movies, setMovies]  = useState([]);
-
-  const mySplice = (array, element) => {
-    array.splice(array.indexOf(element), 1);
-    return array;
-  }
 
   useEffect(() => {
     fetch("/movies").then(response =>
@@ -23,9 +18,10 @@ function App() {
   return (
     <div className="App">
       <Container style={{ marginTop: 40 }}>
-        <MovieForm onNewMovie={movie => setMovies(currentMovies => [movie, ...currentMovies])}/>
-        <Movies movies = {movies} onDeleteMovie={movie => setMovies(currMovies => mySplice(currMovies, movie))}
-        />
+        <NewMovieForm onNewMovie={movie => setMovies(currentMovies => [movie, ...currentMovies])}/>
+        <Movies movies = {movies} onDeleteMovie={movie => setMovies(currMovies => currMovies.filter(
+          movie_ele => movie_ele.id !== movie.id
+        ))}/>
       </Container>
     </div>
   );
