@@ -33,6 +33,7 @@ export const NewMovieForm = ({ onNewMovie }) => {
           onClick={async () => {
             setTitle(capitalize(title))
             let movie = { title, rating }
+            movie.title = capitalize(title)
             const response = await fetch("/add_movie", {
               method: "POST",
               headers: {

@@ -42,7 +42,7 @@ def download_cover(movie: Movie):
 def add_movie():
     movie_data = request.get_json()
     if movie_data and movie_data.get("title") and movie_data.get("rating"):
-        new_movie = Movie(title=movie_data["title"], rating=movie_data["rating"])
+        new_movie = Movie(title=movie_data["title"], rating=str( int(movie_data["rating"])%6 ))
         db.session.add(new_movie)
         db.session.commit()
         download_cover(new_movie)
