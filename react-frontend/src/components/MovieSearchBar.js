@@ -1,68 +1,56 @@
 import _ from 'lodash'
-import faker from 'faker'
-import React, { Component } from 'react'
-import { Search, Grid, Header, Segment } from 'semantic-ui-react'
+import React, { useState } from 'react'
+import { Search, Label, Image } from 'semantic-ui-react'
 
-const initialState = { isLoading: false, results: [], value: '' }
+export const MovieSearchBar = ({ movies, onSelectMovies, loadMovies }) => {
+    const [isLoading, setIsLoading] = useState(false)
+    const [results, setResults] = useState([])
+    const [value, setValue] = useState('')
 
-const source = _.times(5, () => ({
-  title: faker.company.companyName(),
-  description: faker.company.catchPhrase(),
-  image: faker.internet.avatar(),
-  price: faker.finance.amount(0, 100, 2, '$'),
-}))
+    const resultRenderer = ({ title, id }) =>
+        <div>
+            <Label content={title}/>
+            <Image
+                src={id+1 + ".png"}
+                wrapped
+                ui={true}
+            />
+        </div>
 
-export default class MovieSearchBar extends Component {
-  state = initialState
 
-  handleResultSelect = (e, { result }) => this.setState({ value: result.title })
-
-  handleSearchChange = (e, { value }) => {
-    this.setState({ isLoading: true, value })
-
-    setTimeout(() => {
-      if (this.state.value.length < 1) return this.setState(initialState)
-
-      const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-      const isMatch = (result) => re.test(result.title)
-
-      this.setState({
-        isLoading: false,
-        results: _.filter(source, isMatch),
-      })
-    }, 300)
-  }
-
-  render() {
-    const { isLoading, value, results } = this.state
+    const handleResultSelect = (e, { result }) => {
+        setValue(result.title)
+        onSelectMovies([result.id])
+    }
+    const handleSearchChange = (e) => {
+        setValue(e.target.value)
+        setIsLoading(true)
+        setTimeout(
+            () => {
+                if (value.length < 1) {
+                    setIsLoading(false)
+                    setResults([])
+                    setValue('')
+                    loadMovies()
+                }
+                const re = new RegExp(_.escapeRegExp(value), 'i')
+                const isMatch = (result) => re.test(result.title)
+                setIsLoading(false)
+                setResults(_.filter(movies, isMatch))
+            }
+        , 300)
+    }
 
     return (
-      <Grid>
-        <Grid.Column width={6}>
-          <Search
+        <Search
             loading={isLoading}
-            onResultSelect={this.handleResultSelect}
-            onSearchChange={_.debounce(this.handleSearchChange, 500, {
-              leading: true,
+            onResultSelect={handleResultSelect}
+            onSearchChange={_.debounce(handleSearchChange, 500, {
+                leading: true,
             })}
             results={results}
             value={value}
-            {...this.props}
-          />
-        </Grid.Column>
-        <Grid.Column width={10}>
-          <Segment>
-            <Header>State</Header>
-            <pre style={{ overflowX: 'auto' }}>
-              {JSON.stringify(this.state, null, 2)}
-            </pre>
-            <Header>Options</Header>
-            <pre style={{ overflowX: 'auto' }}>
-              {JSON.stringify(source, null, 2)}
-            </pre>
-          </Segment>
-        </Grid.Column>
-      </Grid>
+            resultRenderer={resultRenderer}
+        />
     )
-  }
 }

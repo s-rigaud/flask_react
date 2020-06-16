@@ -7,6 +7,7 @@ import './App.css';
 
 function App() {
   const [movies, setMovies]  = useState([])
+  const colors = ['', 'red', 'orange', 'yellow', 'olive', 'green']
 
   const loadMovies = () => {
     fetch("/movies").then(response =>
@@ -33,8 +34,14 @@ function App() {
     <div className="App">
       <Container style={{ marginTop: 40 }}>
         <NewMovieForm onNewMovie={movie => setMovies(currentMovies => [movie, ...currentMovies])}/>
+        <MovieSearchBar
+          movies = {movies}
+          onSelectMovies={ids => loadAndSelect(ids)}
+          loadMovies = {loadMovies}
+        />
         <Movies
           movies = {movies}
+          colors={colors}
           onSelectMovies={ids => loadAndSelect(ids)}
           onDeleteMovie={movie => setMovies(currMovies => currMovies.filter(
             movie_ele => movie_ele.id !== movie.id

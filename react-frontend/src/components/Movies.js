@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Rating, Button, Card, Image, Divider, Menu, Segment } from 'semantic-ui-react';
 
-const colors = ['', 'red', 'orange', 'yellow', 'olive', 'green']
-
-export const Movies = ({ movies, onSelectMovies, onDeleteMovie }) => {
+export const Movies = ({ movies, colors, onSelectMovies, onDeleteMovie }) => {
 
     const [activeItem, setActiveItem] = useState("All")
     const handleItemClick = (e, { name }) => {
@@ -11,6 +9,7 @@ export const Movies = ({ movies, onSelectMovies, onDeleteMovie }) => {
         let category_rating = (name.split("✰").length - 1)
         let ids = []
         for (let movie of movies){
+            if (name === "All") category_rating = movie.rating
             if (movie.rating === category_rating){
                 ids.push(movie.id)
             }
