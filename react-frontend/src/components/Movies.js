@@ -1,9 +1,25 @@
 import React, { useState } from 'react';
-import { Rating, Button, Card, Image, Divider, Menu, Segment } from 'semantic-ui-react';
+import { Rating, Button, Card, Image, Divider, Menu, Segment, Confirm } from 'semantic-ui-react';
 
 export const Movies = ({ movies, colors, onSelectMovies, onDeleteMovie }) => {
 
     const [activeItem, setActiveItem] = useState("All")
+    const [showPopup, setShowPopup] = useState(false)
+    const [popupContent, setPopupContent] = useState("")
+    const [targetedMovie, setTargetedMovie] = useState(null)
+
+    const showDeletePopup = (movie) => {
+        setPopupContent("Are you sure that you want to delete " + movie.title + " ?")
+        setTargetedMovie(movie)
+        setShowPopup(true)
+    }
+    const handleConfirm = () => {
+        // Delete
+        del(targetedMovie)
+        setShowPopup(false)
+    }
+    const handleCancel = () => setShowPopup(false)
+
     const handleItemClick = (e, { name }) => {
         setActiveItem(name)
         let category_rating = (name.split("✰").length - 1)
@@ -82,7 +98,15 @@ export const Movies = ({ movies, colors, onSelectMovies, onDeleteMovie }) => {
                                     <Rating icon='star' rating={movie.rating} maxRating={5} disabled />
                                 </Card.Meta>
                                 <Card.Description>
-                                    <Button content='X' color='red' onClick={e => del(movie)} />
+                                    <Button onClick={() => showDeletePopup(movie)} color='red'>X</Button>
+                                    <Confirm
+                                        open={showPopup}
+                                        content={popupContent}
+                                        cancelButton="Cancel"
+                                        confirmButton="Sure, I want to delete it !"
+                                        onCancel={handleCancel}
+                                        onConfirm={handleConfirm}
+                                    />
                                 </Card.Description>
                             </Card.Content>
                     </Card>

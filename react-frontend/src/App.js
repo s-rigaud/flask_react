@@ -18,11 +18,7 @@ function App() {
   }
 
   const loadAndSelect = async(ids) => {
-    await fetch("/movies").then(response =>
-      response.json().then(data => {
-        setMovies(data.movies)
-      })
-    )
+    //await loadMovies()
     setMovies(currMovies => currMovies.filter(
       movie_ele => ids.includes(movie_ele.id)
     ))

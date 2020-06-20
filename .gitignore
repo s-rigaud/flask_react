@@ -5,7 +5,7 @@ node_modules
 /react-frontend/node_modules
 /react-frontend/.pnp
 /react-frontend.pnp.js
-/react-frontend/public/*.png
+# /react-frontend/public/*.png
 
 # testing
 /react-frontend/coverage

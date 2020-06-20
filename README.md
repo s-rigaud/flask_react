@@ -14,3 +14,9 @@ cd react-frontend
 //Install modules
 npm start
 ```
+
+## TO-DO
+
+Fix search from semantic-ui
+Fix VS Code
+Fix rating selection
