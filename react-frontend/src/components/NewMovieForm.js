@@ -3,7 +3,7 @@ import { Form, Input, Rating, Button, Segment } from "semantic-ui-react"
 
 export const NewMovieForm = ({ onNewMovie }) => {
   const [title, setTitle] = useState("")
-  const [rating, setRating] = useState(0)
+  const [rating, setRating] = useState(1)
 
   const capitalize = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1)
@@ -47,7 +47,7 @@ export const NewMovieForm = ({ onNewMovie }) => {
                 movie['id'] = await response.json()
                 onNewMovie(movie)
                 setTitle("")
-                setRating(0)
+                setRating(1)
               }
             }}
           >

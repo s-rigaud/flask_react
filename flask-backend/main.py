@@ -50,28 +50,32 @@ def download_cover(movie: Movie):
 
 @app.route("/add_movie", methods=["POST"])
 def add_movie():
-    """Add movie intot DB"""
+    """Add movie into DB"""
     movie_data = request.get_json()
     if movie_data and movie_data.get("title") and movie_data.get("rating"):
-        new_movie = Movie(
-            title=movie_data["title"], rating=str(int(movie_data["rating"]) % 6)
-        )
-        db.session.add(new_movie)
-        db.session.commit()
-        download_cover(new_movie)
+        title = movie_data["title"]
+        rating = int(movie_data["rating"]) % 6
 
-        return str(new_movie.id), 200
+        if rating >= 1:
+            new_movie = Movie(title=title, rating=str(rating))
+            download_cover(new_movie)
+            db.session.add(new_movie)
+            db.session.commit()
+
+            return str(new_movie.id), 200
     return "You should provide a title and a rating to register a movie", 400
 
 
 @app.route("/movies")
 def list_movies():
     """List movies from DB"""
-    movie_list = Movie.query.all()
+    db_movies = Movie.query.all()
     movies = []
 
-    for movie in movie_list:
+    for movie in db_movies:
         movies.append(movie.to_json())
+
+    movies.sort(key=lambda movie: movie['rating'], reverse=True)
 
     return jsonify({"movies": movies})
 

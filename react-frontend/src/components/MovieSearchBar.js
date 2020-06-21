@@ -2,7 +2,7 @@ import _ from 'lodash'
 import React, { useState } from 'react'
 import { Search, Label, Image } from 'semantic-ui-react'
 
-export const MovieSearchBar = ({ movies, onSelectMovies, loadMovies }) => {
+export const MovieSearchBar = ({ onMovieFilter, reloadMovies, setActiveTab }) => {
     const [value, setValue] = useState("")
     const [results, setResults] = useState([])
     const [isLoading, setIsLoading] = useState(false)
@@ -19,26 +19,33 @@ export const MovieSearchBar = ({ movies, onSelectMovies, loadMovies }) => {
 
   const handleResultSelect = (e, { result }) => {
     setValue(result.title)
-    onSelectMovies([result.id])
+    onMovieFilter([result.id])
+    setActiveTab("✰".repeat(result.rating))
   }
 
   const handleSearchChange = (e, {value}) => {
     setValue(value)
     setIsLoading(true)
 
-    setTimeout(async() => {
-      await loadMovies()
+     setTimeout(async() => {
       if (value.length < 1){
         setValue('')
-        setResults([])
+        // Retrieve data directly else movies variable content is outdated
+        let movieData = await reloadMovies()
+        setResults(movieData)
         setIsLoading(false)
+        setActiveTab("All")
+        return
       }
       const re = new RegExp(_.escapeRegExp(value), 'i')
       const isMatch = (result) => re.test(result.title)
-      const correspondingMovies = _.filter(movies, isMatch)
-      console.log(correspondingMovies)
+
+      // Retrieve data directly else movies variable content is outdated
+      let movieData = await reloadMovies()
+      const correspondingMovies = _.filter(movieData, isMatch)
+      console.log("correspondingMovies", correspondingMovies)
       setResults(correspondingMovies)
-      onSelectMovies(correspondingMovies.map(movie => movie.id))
+      onMovieFilter(correspondingMovies.map(movie => movie.id))
       setIsLoading(false)
     }, 300)
 

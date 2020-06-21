@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Rating, Button, Card, Image, Divider, Menu, Segment, Confirm } from 'semantic-ui-react';
 
-export const Movies = ({ movies, colors, onSelectMovies, onDeleteMovie }) => {
+export const Movies = ({ movies, activeTab, colors, icons, reloadMovies, setActiveTab, onMovieFilter, onDeleteMovie }) => {
 
-    const [activeItem, setActiveItem] = useState("All")
     const [showPopup, setShowPopup] = useState(false)
     const [popupContent, setPopupContent] = useState("")
     const [targetedMovie, setTargetedMovie] = useState(null)
@@ -20,17 +19,22 @@ export const Movies = ({ movies, colors, onSelectMovies, onDeleteMovie }) => {
     }
     const handleCancel = () => setShowPopup(false)
 
-    const handleItemClick = (e, { name }) => {
-        setActiveItem(name)
+    const handleItemClick = async(e, { name }) => {
+        setActiveTab(name)
+
+        // Retrieve data directly else movies variable content is outdated
+        let movieData = await reloadMovies()
         let category_rating = (name.split("✰").length - 1)
+
+        //rewrite using map and filter
         let ids = []
-        for (let movie of movies){
+        for (let movie of movieData){
             if (name === "All") category_rating = movie.rating
             if (movie.rating === category_rating){
                 ids.push(movie.id)
             }
         }
-        onSelectMovies(ids)
+        onMovieFilter(ids)
     }
 
     const del = async(movie) =>{
@@ -51,32 +55,32 @@ export const Movies = ({ movies, colors, onSelectMovies, onDeleteMovie }) => {
             <Menu pointing secondary>
                 <Menu.Item
                     name='All'
-                    active={activeItem === 'All'}
+                    active={activeTab === 'All'}
                     onClick={handleItemClick}
                 />
                 <Menu.Item
                     name='✰✰✰✰✰'
-                    active={activeItem === '✰✰✰✰✰'}
+                    active={activeTab === '✰✰✰✰✰'}
                     onClick={handleItemClick}
                 />
                 <Menu.Item
                     name='✰✰✰✰'
-                    active={activeItem === '✰✰✰✰'}
+                    active={activeTab === '✰✰✰✰'}
                     onClick={handleItemClick}
                 />
                 <Menu.Item
                     name='✰✰✰'
-                    active={activeItem === '✰✰✰'}
+                    active={activeTab === '✰✰✰'}
                     onClick={handleItemClick}
                 />
                 <Menu.Item
                     name='✰✰'
-                    active={activeItem === '✰✰'}
+                    active={activeTab === '✰✰'}
                     onClick={handleItemClick}
                 />
                 <Menu.Item
                     name='✰'
-                    active={activeItem === '✰'}
+                    active={activeTab === '✰'}
                     onClick={handleItemClick}
                 />
             </Menu>
@@ -89,7 +93,7 @@ export const Movies = ({ movies, colors, onSelectMovies, onDeleteMovie }) => {
                                 src={movie.id + ".png"}
                                 wrapped
                                 ui={true}
-                                label={{ as: 'a', corner: 'left', icon: 'heart', color: colors[movie.rating] }}
+                                label={{ as: 'a', corner: 'left', icon: icons[movie.rating], color: colors[movie.rating] }}
                             />
                             <Card.Content>
                                 <Card.Header>{movie.title}</Card.Header>

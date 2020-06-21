@@ -2,14 +2,15 @@
 
 ## Backend
 
-```python
+```bash
 cd flask-backend
 pip install -r requirements.txt
 python main.py
 ```
+
 ## Frontend
 
-```
+```bash
 cd react-frontend
 //Install modules
 npm start
@@ -17,6 +18,6 @@ npm start
 
 ## TO-DO
 
-Fix search from semantic-ui
+Fix img search
+Fix pictures downloading
 Fix VS Code
-Fix rating selection
