@@ -1,18 +1,18 @@
-import React, {useState, useEffect} from 'react';
-import { Movies } from './components/Movies';
-import { NewMovieForm } from './components/NewMovieForm';
-import { MovieSearchBar } from './components/MovieSearchBar';
-import { Container } from 'semantic-ui-react';
-import './App.css';
+import React, {useState, useEffect} from 'react'
+import { Movies } from './components/Movies'
+import { NewMovieForm } from './components/NewMovieForm'
+import { MovieSearchBar } from './components/MovieSearchBar'
+import { Container } from 'semantic-ui-react'
+import './App.css'
 
 function App() {
   const [activeTab, setActiveTab] = useState("All")
   const [movies, setMovies]  = useState([])
   const colors = ['', 'red', 'orange', 'yellow', 'olive', 'green']
-  const icons = ['', 'thumbs down', 'thumbs up outline', 'thumbs up', 'heart', 'trophy']
+  const icons = ['', 'thumbs down', 'thumbs up', 'fire', 'heart', 'trophy']
 
   const reloadMovies = async() => {
-    let movieData = null;
+    let movieData = null
     await fetch("/movies").then(response =>
       response.json().then(data => {
         setMovies(data.movies)
@@ -24,7 +24,7 @@ function App() {
     return movieData
   }
 
-  const filterMovies = async(ids) => {
+  const filterMovies = (ids) => {
     setMovies(currMovies => currMovies.filter(
       movie_ele => ids.includes(movie_ele.id)
     ))
@@ -37,6 +37,7 @@ function App() {
       <Container style={{ marginTop: 40 }}>
         <NewMovieForm onNewMovie={movie => setMovies(currentMovies => [movie, ...currentMovies])}/>
         <MovieSearchBar
+          movies={movies}
           onMovieFilter={ids => filterMovies(ids)}
           reloadMovies = {reloadMovies}
           setActiveTab={setActiveTab}
@@ -55,7 +56,7 @@ function App() {
         />
       </Container>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

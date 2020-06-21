@@ -25,7 +25,7 @@ export const NewMovieForm = ({ onNewMovie }) => {
             rating={rating}
             maxRating={5}
             onRate={(_, data) => {
-              setRating(data.rating);
+              setRating(data.rating)
             }}
           />
         </Form.Field>
@@ -56,5 +56,5 @@ export const NewMovieForm = ({ onNewMovie }) => {
         </Form.Field>
       </Form>
     </Segment>
-  );
-};
+  )
+}

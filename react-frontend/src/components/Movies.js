@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Rating, Button, Card, Image, Divider, Menu, Segment, Confirm } from 'semantic-ui-react';
+import React, { useState } from 'react'
+import { Rating, Button, Card, Image, Divider, Menu, Segment, Confirm } from 'semantic-ui-react'
 
 export const Movies = ({ movies, activeTab, colors, icons, reloadMovies, setActiveTab, onMovieFilter, onDeleteMovie }) => {
 
@@ -13,28 +13,23 @@ export const Movies = ({ movies, activeTab, colors, icons, reloadMovies, setActi
         setShowPopup(true)
     }
     const handleConfirm = () => {
-        // Delete
         del(targetedMovie)
         setShowPopup(false)
     }
     const handleCancel = () => setShowPopup(false)
 
-    const handleItemClick = async(e, { name }) => {
+    const handleTabChange = async(e, { name }) => {
         setActiveTab(name)
 
         // Retrieve data directly else movies variable content is outdated
         let movieData = await reloadMovies()
         let category_rating = (name.split("✰").length - 1)
 
-        //rewrite using map and filter
-        let ids = []
-        for (let movie of movieData){
-            if (name === "All") category_rating = movie.rating
-            if (movie.rating === category_rating){
-                ids.push(movie.id)
-            }
+        if (name === "All"){
+            onMovieFilter(movieData.map(movie => movie.id))
+        }else{
+            onMovieFilter(movieData.filter(movie => movie.rating === category_rating).map(movie => movie.id))
         }
-        onMovieFilter(ids)
     }
 
     const del = async(movie) =>{
@@ -45,7 +40,7 @@ export const Movies = ({ movies, activeTab, colors, icons, reloadMovies, setActi
             },
         })
         if (response.ok){
-            console.log('del response ok');
+            console.log('del response ok')
             onDeleteMovie(movie)
         }
     }
@@ -56,32 +51,32 @@ export const Movies = ({ movies, activeTab, colors, icons, reloadMovies, setActi
                 <Menu.Item
                     name='All'
                     active={activeTab === 'All'}
-                    onClick={handleItemClick}
+                    onClick={handleTabChange}
                 />
                 <Menu.Item
                     name='✰✰✰✰✰'
                     active={activeTab === '✰✰✰✰✰'}
-                    onClick={handleItemClick}
+                    onClick={handleTabChange}
                 />
                 <Menu.Item
                     name='✰✰✰✰'
                     active={activeTab === '✰✰✰✰'}
-                    onClick={handleItemClick}
+                    onClick={handleTabChange}
                 />
                 <Menu.Item
                     name='✰✰✰'
                     active={activeTab === '✰✰✰'}
-                    onClick={handleItemClick}
+                    onClick={handleTabChange}
                 />
                 <Menu.Item
                     name='✰✰'
                     active={activeTab === '✰✰'}
-                    onClick={handleItemClick}
+                    onClick={handleTabChange}
                 />
                 <Menu.Item
                     name='✰'
                     active={activeTab === '✰'}
-                    onClick={handleItemClick}
+                    onClick={handleTabChange}
                 />
             </Menu>
 
@@ -114,7 +109,7 @@ export const Movies = ({ movies, activeTab, colors, icons, reloadMovies, setActi
                                 </Card.Description>
                             </Card.Content>
                     </Card>
-                    );
+                    )
                 })}
             </Card.Group>
         </Segment>
