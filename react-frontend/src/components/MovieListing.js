@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Rating, Button, Card, Image, Divider, Menu, Segment, Confirm } from 'semantic-ui-react'
 
-export const Movies = ({ movies, activeTab, colors, icons, reloadMovies, setActiveTab, onMovieFilter, onDeleteMovie }) => {
+export const MovieListing = ({ movies, activeTab, colors, icons, reloadMovies, setActiveTab, onMovieFilter, onDeleteMovie }) => {
 
     const [showPopup, setShowPopup] = useState(false)
     const [popupContent, setPopupContent] = useState("")
@@ -40,7 +40,6 @@ export const Movies = ({ movies, activeTab, colors, icons, reloadMovies, setActi
             },
         })
         if (response.ok){
-            console.log('del response ok')
             onDeleteMovie(movie)
         }
     }

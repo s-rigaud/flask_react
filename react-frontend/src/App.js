@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react'
-import { Movies } from './components/Movies'
-import { NewMovieForm } from './components/NewMovieForm'
-import { MovieSearchBar } from './components/MovieSearchBar'
 import { Container } from 'semantic-ui-react'
 import './App.css'
+
+import { Header } from './components/Header'
+import { MovieListing } from './components/MovieListing'
+import { NewMovieForm } from './components/NewMovieForm'
 
 function App() {
   const [activeTab, setActiveTab] = useState("All")
@@ -17,8 +18,6 @@ function App() {
       response.json().then(data => {
         setMovies(data.movies)
         movieData = data.movies
-        console.log("movies retrieved")
-        console.log("movies ", data.movies)
       })
     )
     return movieData
@@ -30,19 +29,20 @@ function App() {
     ))
   }
 
-  useEffect(reloadMovies, [])
+  useEffect(() => reloadMovies(), [])
 
   return (
     <div className="App">
-      <Container style={{ marginTop: 40 }}>
-        <NewMovieForm onNewMovie={movie => setMovies(currentMovies => [movie, ...currentMovies])}/>
-        <MovieSearchBar
+      <Header
+          // Props are mainly used for MovieSearchBar
           movies={movies}
-          onMovieFilter={ids => filterMovies(ids)}
+          filterMovies={filterMovies}
           reloadMovies = {reloadMovies}
           setActiveTab={setActiveTab}
-        />
-        <Movies
+      />
+      <Container style={{ marginTop: 40 }}>
+        <NewMovieForm onNewMovie={movie => setMovies(currentMovies => [movie, ...currentMovies])}/>
+        <MovieListing
           activeTab={activeTab}
           colors={colors}
           icons={icons}

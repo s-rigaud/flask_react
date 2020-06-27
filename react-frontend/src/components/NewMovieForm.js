@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Form, Input, Rating, Button, Segment } from "semantic-ui-react"
+import { Form, Input, Rating, Button, Popup, Segment } from "semantic-ui-react"
 
 export const NewMovieForm = ({ onNewMovie }) => {
   const [title, setTitle] = useState("")
@@ -11,6 +11,7 @@ export const NewMovieForm = ({ onNewMovie }) => {
 
   return (
     <Segment raised>
+      <Popup content='Add movie to the database' trigger={<Button icon='question circle' />} />
       <Form>
         <Form.Field>
           <Input
