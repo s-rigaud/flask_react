@@ -58,9 +58,9 @@ def add_movie():
 
         if rating >= 1:
             new_movie = Movie(title=title, rating=str(rating))
-            download_cover(new_movie)
             db.session.add(new_movie)
             db.session.commit()
+            download_cover(new_movie)
 
             return str(new_movie.id), 200
     return "You should provide a title and a rating to register a movie", 400

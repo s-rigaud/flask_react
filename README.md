@@ -1,4 +1,4 @@
-# Run te project
+# To run the project
 
 ## Backend
 
@@ -12,7 +12,7 @@ python main.py
 
 ```bash
 cd react-frontend
-//Install modules
+npm install
 npm start
 ```
 
