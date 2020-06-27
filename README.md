@@ -13,6 +13,7 @@ Frontend is built using React 16.13 (Node.js).
 ## Backend
 
 ```bash
+# Having Python 3
 cd flask-backend
 pip install -r requirements.txt
 python main.py
@@ -21,13 +22,8 @@ python main.py
 ## Frontend
 
 ```bash
+# Having Node.Js installed
 cd react-frontend
 npm install
 npm start
 ```
-
-## TO-DO
-
-* Fix img search
-* Fix pictures downloading
-* Fix VS Code
