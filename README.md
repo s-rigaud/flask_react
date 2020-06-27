@@ -6,7 +6,7 @@ Frontend is built using React 16.13 (Node.js).
 
 # Short demo
 
-![Demo gif](https://raw.githubusercontent.com/s-rigaud/flask_react/master/demo.gif)
+![Demo gif](https://github.com/s-rigaud/flask_react/blob/master/demo.gif)
 
 # To run the project
 
